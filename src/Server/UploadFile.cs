@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace Server
 {
@@ -34,17 +35,40 @@ namespace Server
                     message = "File is required"
                 });
 
-            string name = req.Query["name"];
+            // Validate the file 
+            var extension = Path.GetExtension(formFile.FileName);
+            var allowedExtensions = new[] { ".jpg", ".png", ".svg", ".hiec" };
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            if (!allowedExtensions.Contains(extension))
+                return new BadRequestObjectResult(new
+                {
+                    message = "Invalid image file"
+                });
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+            // Validate the size of the file 
+            if (formFile.Length > (1024 * 1024 * 10))
+                return new BadRequestObjectResult(new
+                {
+                    message = "Image file cannot be more than 10MB"
+                });
 
-            return new OkObjectResult(responseMessage);
+            var storageClient = StorageAccount.NewFromConnectionString(_config["AzureWebJobsStorage"]);
+            var blobClient = storageClient.CreateCloudBlobClient();
+            var containerClient = blobClient.GetContainerReference("pictures");
+            await containerClient.CreateIfNotExistsAsync();
+            string newName = $"{Guid.NewGuid()}{extension}";
+            var blockBlobClient = containerClient.GetBlockBlobReference(newName);
+
+            using (var stream = formFile.OpenReadStream())
+            {
+                await blockBlobClient.UploadFromStreamAsync(stream);
+            }
+
+            return new OkObjectResult(new
+            {
+                message = "File uploaded successfully",
+                data = $"{_config["BlobContainerUrl"]}/{newName}"
+            });
         }
     }
 }
