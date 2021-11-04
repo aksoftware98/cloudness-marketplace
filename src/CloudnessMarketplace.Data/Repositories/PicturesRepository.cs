@@ -40,7 +40,7 @@ namespace CloudnessMarketplace.Data.Repositories
             // Get the container 
             var container = _db.GetContainer(CONTAINER_NAME);
             await container.CreateItemAsync(picture);
-            return picture.Url; 
+            return picture.Url;
         }
 
         public async Task<Picture> GetByUrlAsync(string url)
@@ -60,7 +60,7 @@ namespace CloudnessMarketplace.Data.Repositories
 
         public async Task<IEnumerable<Picture>> ListPendingAsync()
         {
-            var query = $"SELECT * FROM c WHERE c.creationDate > '{DateTime.UtcNow.AddHours(MAX_HOURS)}'";
+            var query = $"SELECT * FROM c WHERE c.creationDate < '{DateTime.UtcNow.AddHours(-MAX_HOURS):yyyy-MM-ddTHH:mm:ss.000Z}'";
 
             // Get the container 
             var container = _db.GetContainer(CONTAINER_NAME);
@@ -79,12 +79,13 @@ namespace CloudnessMarketplace.Data.Repositories
             return pictures;
         }
 
-        public async Task RemoveAsync(string id)
+        public async Task RemoveAsync(string url)
         {
             // Get the container 
             var container = _db.GetContainer(CONTAINER_NAME);
-
-            await container.DeleteItemAsync<Picture>(id, new PartitionKey());
+            var picture = await GetByUrlAsync(url);
+            if (picture != null)
+                await container.DeleteItemAsync<Picture>(picture.Url, new PartitionKey(picture.Type));
         }
     }
 }
