@@ -15,6 +15,8 @@ namespace CloudnessMarketplace.Data.Repositories
 
         private readonly Database _db;
         private const string CONTAINER_NAME = "Pictures";
+        private const int MAX_HOURS = 24;
+
         public PicturesRepository(DbOptions options)
         {
             var cosmosClient = new CosmosClient(options.ConnectionString);
@@ -54,9 +56,25 @@ namespace CloudnessMarketplace.Data.Repositories
             return null;
         }
 
-        public Task<IEnumerable<Picture>> ListPendingAsync()
+        public async Task<IEnumerable<Picture>> ListPendingAsync()
         {
-            throw new NotImplementedException();
+            var query = $"SELECT * FROM c WHERE c.creationDate > '{DateTime.UtcNow.AddHours(MAX_HOURS)}'";
+
+            // Get the container 
+            var container = _db.GetContainer(CONTAINER_NAME);
+            var iterator = container.GetItemQueryIterator<Picture>(query);
+            var result = await iterator.ReadNextAsync();
+            var pictures = new List<Picture>();
+            pictures.AddRange(result.Resource);
+
+            while (result.ContinuationToken != null)
+            {
+                iterator = container.GetItemQueryIterator<Picture>(query, result.ContinuationToken);
+                result = await iterator.ReadNextAsync();
+                pictures.AddRange(result.Resource);
+            }
+
+            return pictures;
         }
 
         public Task RemoveAsync(string id)
