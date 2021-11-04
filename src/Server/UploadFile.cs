@@ -9,16 +9,19 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
+using CloudnessMarketplace.Data.Interfaces;
 
 namespace Server
 {
     public class UploadFile
     {
         private readonly IConfiguration _config;
+        private readonly IPictureRepository _picsRepo;
 
-        public UploadFile(IConfiguration config)
+        public UploadFile(IConfiguration config, IPictureRepository picsRepo)
         {
             _config = config;
+            _picsRepo = picsRepo;
         }
 
         [FunctionName("UploadFile")]
@@ -59,15 +62,19 @@ namespace Server
             string newName = $"{Guid.NewGuid()}{extension}";
             var blockBlobClient = containerClient.GetBlockBlobReference(newName);
 
+            string url = string.Empty; 
             using (var stream = formFile.OpenReadStream())
             {
                 await blockBlobClient.UploadFromStreamAsync(stream);
+                url = $"{_config["BlobContainerUrl"]}/{newName}";
+                // Save the file to the database
+                // TODO: Bring the User Id 
+                await _picsRepo.AddAsync(url, formFile.FileName, stream.Length, "userId");
             }
-
             return new OkObjectResult(new
             {
                 message = "File uploaded successfully",
-                data = $"{_config["BlobContainerUrl"]}/{newName}"
+                data = url
             });
         }
     }

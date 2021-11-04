@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.22.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CloudnessMarketplace.Models\CloudnessMarketplace.Models.csproj" />
     <ProjectReference Include="..\CloudnessMarketplace.Shared\CloudnessMarketplace.Shared.csproj" />
   </ItemGroup>

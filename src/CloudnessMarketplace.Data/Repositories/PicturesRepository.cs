@@ -4,6 +4,7 @@ using CloudnessMarketplace.Models;
 using Microsoft.Azure.Cosmos;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace CloudnessMarketplace.Data.Repositories
                 UserId = userId,
                 CreationDate = DateTime.UtcNow,
                 Url = url,
+                Type = Path.GetExtension(url).Replace(".", "").ToLower()
             };
 
             // Get the container 

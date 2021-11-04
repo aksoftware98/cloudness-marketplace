@@ -1,4 +1,5 @@
 ﻿using CloudnessMarketplace.Data.Interfaces;
+using CloudnessMarketplace.Data.Options;
 using CloudnessMarketplace.Data.Repositories;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,14 @@ namespace CloudnessMarketplace.Functions
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            var config = builder.GetContext().Configuration; 
+            builder.Services.AddScoped(sp => new DbOptions
+            {
+                DatabaseName = config["DatabaseName"],
+                ConnectionString = config["CosmosDbConnectionString"]
+            });
             builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+            builder.Services.AddScoped<IPictureRepository, PicturesRepository>();
         }
     }
 }
