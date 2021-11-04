@@ -1,20 +1,21 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Text.Json.Serialization;
 
 namespace CloudnessMarketplace.Models
 {
     public class ProductLike
     {
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonPropertyName("productId")]
+        [JsonProperty("productId")]
         public string ProductId { get; set; }
 
-        [JsonPropertyName("userId")]
+        [JsonProperty("userId")]
         public string UserId { get; set; }
 
-        [JsonPropertyName("likeDate")]
+        [JsonProperty("likeDate")]
         public DateTime LikeDate { get; set; }
     }
 

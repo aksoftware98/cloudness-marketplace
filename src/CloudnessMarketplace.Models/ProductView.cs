@@ -1,16 +1,17 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace CloudnessMarketplace.Models
 {
     public class ProductView
     {
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonPropertyName("productId")]
+        [JsonProperty("productId")]
         public string ProductId { get; set; }
 
-        [JsonPropertyName("userId")]
+        [JsonProperty("userId")]
         public string UserId { get; set; }
     }
 

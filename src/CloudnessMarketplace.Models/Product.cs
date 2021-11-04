@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -6,37 +7,37 @@ namespace CloudnessMarketplace.Models
 {
     public class Product
     {
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("description")]
+        [JsonProperty("description")]
         public string Description {  get; set; }
 
-        [JsonPropertyName("category")]
+        [JsonProperty("category")]
         public string Category { get; set; }
 
-        [JsonPropertyName("price")]
+        [JsonProperty("price")]
         public decimal Price { get; set; }
 
-        [JsonPropertyName("userId")]
+        [JsonProperty("userId")]
         public string UserId { get; set; }
 
-        [JsonPropertyName("creationDate")]
+        [JsonProperty("creationDate")]
         public DateTime CreationDate { get; set; }
 
-        [JsonPropertyName("metadata")]
+        [JsonProperty("metadata")]
         public Dictionary<string , object> Metadata { get; set; }
 
-        [JsonPropertyName("pictureUrls")]
+        [JsonProperty("pictureUrls")]
         public List<string> PictureUrls { get; set; }
 
-        [JsonPropertyName("isSold")]
+        [JsonProperty("isSold")]
         public bool IsSold { get; set; }
 
-        [JsonPropertyName("sellingDate")]
+        [JsonProperty("sellingDate")]
         public DateTime? SellingDate { get; set; }
 
     }
