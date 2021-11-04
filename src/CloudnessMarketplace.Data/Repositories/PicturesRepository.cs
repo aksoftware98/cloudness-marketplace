@@ -45,7 +45,7 @@ namespace CloudnessMarketplace.Data.Repositories
 
         public async Task<Picture> GetByUrlAsync(string url)
         {
-            var query = $"SELECT * FROM c WHERE c.url = {url}";
+            var query = $"SELECT * FROM c WHERE c.url = '{url}'";
 
 
             // Get the container 
@@ -85,7 +85,7 @@ namespace CloudnessMarketplace.Data.Repositories
             var container = _db.GetContainer(CONTAINER_NAME);
             var picture = await GetByUrlAsync(url);
             if (picture != null)
-                await container.DeleteItemAsync<Picture>(picture.Url, new PartitionKey(picture.Type));
+                await container.DeleteItemAsync<Picture>(picture.Id, new PartitionKey(picture.Type));
         }
     }
 }
