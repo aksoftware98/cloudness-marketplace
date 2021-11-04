@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudnessMarketplace.Functi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudnessMarketplace.Models", "CloudnessMarketplace.Models\CloudnessMarketplace.Models.csproj", "{E4BF5FF9-789E-44B1-9DD9-0478A695192E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudnessMarketplace.Data", "CloudnessMarketplace.Data\CloudnessMarketplace.Data.csproj", "{D1570E44-11A0-474B-BAE7-EB2818F69C25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudnessMarketplace.Data", "CloudnessMarketplace.Data\CloudnessMarketplace.Data.csproj", "{D1570E44-11A0-474B-BAE7-EB2818F69C25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudnessMarketplace.Shared", "CloudnessMarketplace.Shared\CloudnessMarketplace.Shared.csproj", "{44E95966-2BFD-4E69-A6EE-25C5EC2FB7B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudnessMarketplace.Shared", "CloudnessMarketplace.Shared\CloudnessMarketplace.Shared.csproj", "{44E95966-2BFD-4E69-A6EE-25C5EC2FB7B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
