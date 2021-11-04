@@ -4,6 +4,7 @@ using CloudnessMarketplace.Models;
 using Microsoft.Azure.Cosmos;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,9 +39,19 @@ namespace CloudnessMarketplace.Data.Repositories
             return picture.Url; 
         }
 
-        public Task<Picture> GetByUrlAsync(string url)
+        public async Task<Picture> GetByUrlAsync(string url)
         {
-            throw new NotImplementedException();
+            var query = $"SELECT * FROM c WHERE c.url = {url}";
+
+
+            // Get the container 
+            var container = _db.GetContainer(CONTAINER_NAME);
+            var iterator = container.GetItemQueryIterator<Picture>(query);
+            var result = await iterator.ReadNextAsync();
+            if (result.Resource.Any())
+                return result.Resource.FirstOrDefault();
+
+            return null;
         }
 
         public Task<IEnumerable<Picture>> ListPendingAsync()
