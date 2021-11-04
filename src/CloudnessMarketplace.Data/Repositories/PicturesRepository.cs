@@ -77,9 +77,12 @@ namespace CloudnessMarketplace.Data.Repositories
             return pictures;
         }
 
-        public Task RemoveAsync(string id)
+        public async Task RemoveAsync(string id)
         {
-            throw new NotImplementedException();
+            // Get the container 
+            var container = _db.GetContainer(CONTAINER_NAME);
+
+            await container.DeleteItemAsync<Picture>(id, new PartitionKey());
         }
     }
 }
