@@ -1,6 +1,8 @@
 ﻿using CloudnessMarketplace.Data.Interfaces;
 using CloudnessMarketplace.Data.Options;
 using CloudnessMarketplace.Data.Repositories;
+using CloudnessMarketplace.Shared.Validators;
+using FluentValidation.AspNetCore;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,7 +18,13 @@ namespace CloudnessMarketplace.Functions
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            var config = builder.GetContext().Configuration; 
+            var config = builder.GetContext().Configuration;
+
+
+            builder.Services.AddFluentValidation(config =>
+            {
+                config.RegisterValidatorsFromAssembly(typeof(ProductDtoValidator).Assembly);
+            });
             builder.Services.AddScoped(sp => new DbOptions
             {
                 DatabaseName = config["DatabaseName"],
