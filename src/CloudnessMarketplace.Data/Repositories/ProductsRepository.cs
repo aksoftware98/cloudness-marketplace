@@ -70,9 +70,12 @@ namespace CloudnessMarketplace.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task SellAsync(string id)
+        public async Task SellAsync(Product product)
         {
-            throw new NotImplementedException();
+            product.IsSold = true;
+            product.SellingDate = DateTime.UtcNow;
+
+            await _container.ReplaceItemAsync<Product>(product, product.Id);
         }
 
         public Task<Product> UpdateAsync(Product product)
