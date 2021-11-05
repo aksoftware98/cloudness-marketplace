@@ -88,4 +88,6 @@ namespace CloudnessMarketplace.Data.Repositories
                 await container.DeleteItemAsync<Picture>(picture.Id, new PartitionKey(picture.Type));
         }
     }
+
+
 }
