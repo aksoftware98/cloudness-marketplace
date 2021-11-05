@@ -55,9 +55,36 @@ namespace CloudnessMarketplace.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<PagedList<Product>> GetProductsByCategoryAsync(string categoryName, int pageIndex = 1, int pageSize = 10)
+        public async Task<PagedList<Product>> GetProductsByCategoryAsync(string categoryName, int pageIndex = 1, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            if (pageSize > 100)
+                pageSize = 100;
+
+            if (pageSize < 5)
+                pageSize = 5;
+
+            if (pageIndex < 1)
+                pageIndex = 1; 
+
+            // Get the total count of the items 
+            var countQuery = $"SELECT VALUE COUNT('id') FROM c WHERE c.category = '{categoryName}'";
+
+            var countsIterator = _container.GetItemQueryIterator<int>(countQuery);
+            var countsResult = await countsIterator.ReadNextAsync();
+            int totalCount = countsResult.Resource.FirstOrDefault();
+
+            // Get all the items within the category 
+            int skip = (pageIndex - 1) * pageSize;
+            int limit = pageSize; 
+            var query = $"SELECT * FROM c WHERE c.category = '{categoryName}' OFFSET {skip} LIMIT {limit}";
+            var iterator = _container.GetItemQueryIterator<Product>(query);
+            var result = await iterator.ReadNextAsync();
+
+            int totalPages = totalCount / pageSize;
+            if (totalPages % pageSize != 0)
+                totalPages++;
+
+            return new PagedList<Product>(result.Resource, pageIndex, totalPages, pageSize, totalCount);
         }
 
         public Task<PagedList<Product>> GetTodayProductsAsync(int pageIndex = 1, int pageSize = 10)
