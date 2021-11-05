@@ -81,7 +81,8 @@ namespace CloudnessMarketplace.Data.Repositories
             var result = await iterator.ReadNextAsync();
 
             int totalPages = totalCount / pageSize;
-            if (totalPages % pageSize != 0)
+        
+            if (totalCount % pageSize != 0)
                 totalPages++;
 
             return new PagedList<Product>(result.Resource, pageIndex, totalPages, pageSize, totalCount);
