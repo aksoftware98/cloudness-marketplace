@@ -43,7 +43,7 @@ namespace CloudnessMarketplace.Functions
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 model = JsonConvert.DeserializeObject<ProductDto>(requestBody);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new BadRequestObjectResult(new ApiErrorResponse("Failed to create a new product", new[]
                 {
