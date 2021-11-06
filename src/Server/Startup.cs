@@ -20,7 +20,6 @@ namespace CloudnessMarketplace.Functions
         {
             var config = builder.GetContext().Configuration;
 
-
             builder.Services.AddFluentValidation(config =>
             {
                 config.RegisterValidatorsFromAssembly(typeof(ProductDtoValidator).Assembly);
