@@ -14,20 +14,20 @@ namespace CloudnessMarketplace.Data.Repositories
 
         private readonly Database _db;
         private const string CONTAINER_NAME = "Products";
-        private readonly Container _container; 
+        private readonly Container _container;
 
         public ProductsRepository(DbOptions options)
         {
             var cosmosClient = new CosmosClient(options.ConnectionString);
             _db = cosmosClient.GetDatabase(options.DatabaseName);
-            _container = _db.GetContainer(CONTAINER_NAME); 
+            _container = _db.GetContainer(CONTAINER_NAME);
         }
 
         public async Task<Product> CreateAsync(Product product)
         {
             // Validate the fields 
             var result = await _container.CreateItemAsync(product);
-            return result; 
+            return result;
         }
 
         public async Task<Product> GetByIdAsync(string id)
@@ -47,7 +47,7 @@ namespace CloudnessMarketplace.Data.Repositories
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
 
-            await _container.DeleteItemAsync<Product>(product.Id, new PartitionKey(product.Category)); 
+            await _container.DeleteItemAsync<Product>(product.Id, new PartitionKey(product.Category));
         }
 
         public async Task<PagedList<Product>> GetFeaturedProductsAsync(int pageIndex = 1, int pageSize = 10)
@@ -64,7 +64,7 @@ namespace CloudnessMarketplace.Data.Repositories
                 pageSize = 5;
 
             if (pageIndex < 1)
-                pageIndex = 1; 
+                pageIndex = 1;
 
             // Get the total count of the items 
             var countQuery = $"SELECT VALUE COUNT('id') FROM c WHERE c.category = '{categoryName}'";
@@ -75,13 +75,13 @@ namespace CloudnessMarketplace.Data.Repositories
 
             // Get all the items within the category 
             int skip = (pageIndex - 1) * pageSize;
-            int limit = pageSize; 
+            int limit = pageSize;
             var query = $"SELECT * FROM c WHERE c.category = '{categoryName}' OFFSET {skip} LIMIT {limit}";
             var iterator = _container.GetItemQueryIterator<Product>(query);
             var result = await iterator.ReadNextAsync();
 
             int totalPages = totalCount / pageSize;
-        
+
             if (totalCount % pageSize != 0)
                 totalPages++;
 
