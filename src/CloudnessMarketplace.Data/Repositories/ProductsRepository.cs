@@ -50,7 +50,7 @@ namespace CloudnessMarketplace.Data.Repositories
             await _container.DeleteItemAsync<Product>(product.Id, new PartitionKey(product.Category));
         }
 
-        public async Task<PagedList<Product>> GetFeaturedProductsAsync(int pageIndex = 1, int pageSize = 10)
+        public async Task<PagedList<Product>> GetTrendProductsAsync(int pageIndex = 1, int pageSize = 10)
         {
             throw new NotImplementedException();
         }

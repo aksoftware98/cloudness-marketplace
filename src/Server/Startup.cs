@@ -33,6 +33,7 @@ namespace CloudnessMarketplace.Functions
             builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             builder.Services.AddScoped<IPictureRepository, PicturesRepository>();
             builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+            builder.Services.AddScoped<IProductLikesRepository, ProductLikesRepository>();
         }
     }
 }

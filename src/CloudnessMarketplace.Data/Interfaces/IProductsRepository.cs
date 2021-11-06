@@ -13,7 +13,7 @@ namespace CloudnessMarketplace.Data.Interfaces
         Task<Product> GetByIdAsync(string id);
         Task<PagedList<Product>> GetProductsByCategoryAsync(string categoryName, int pageIndex = 1, int pageSize = 10);
         Task<PagedList<Product>> GetUserProductsAsync(string userId, int pageIndex = 1, int pageSize = 10);
-        Task<PagedList<Product>> GetFeaturedProductsAsync(int pageIndex = 1, int pageSize = 10);
+        Task<PagedList<Product>> GetTrendProductsAsync(int pageIndex = 1, int pageSize = 10);
         Task<PagedList<Product>> GetTodayProductsAsync(int pageIndex = 1, int pageSize = 10);
     }
 }
