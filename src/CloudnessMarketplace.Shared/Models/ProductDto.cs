@@ -26,5 +26,9 @@ namespace CloudnessMarketplace.Shared.Models
         public bool IsSold { get; set; }
 
         public DateTime? SellingDate { get; set; }
+
+        public int Likes { get; set; }
+
+        public int Views { get; set; }
     }
 }

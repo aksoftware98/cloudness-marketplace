@@ -30,14 +30,23 @@ namespace CloudnessMarketplace.Data.Repositories
             return result;
         }
 
-        public async Task<Product> GetByIdAsync(string id)
+        public async Task<Product> GetByIdAsync(string id, bool increaseView = false)
         {
             var query = $"SELECT * FROM p WHERE p.id = '{id}'";
 
             var iterator = _container.GetItemQueryIterator<Product>(query);
             var result = await iterator.ReadNextAsync();
             if (result.Resource.Any())
-                return result.FirstOrDefault();
+            {
+                var product = result.FirstOrDefault(); 
+                if (increaseView)
+                {
+                    product.Views++;
+                    await _container.ReplaceItemAsync<Product>(product, product.Id);
+                }
+
+                return product;
+            }
 
             return null;
         }

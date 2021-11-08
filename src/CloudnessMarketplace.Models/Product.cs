@@ -39,7 +39,12 @@ namespace CloudnessMarketplace.Models
 
         [JsonProperty("sellingDate")]
         public DateTime? SellingDate { get; set; }
+    
+        [JsonProperty("likes")]
+        public int Likes { get; set; }
 
+        [JsonProperty("views")]
+        public int Views { get; set; }
     }
 
 }
