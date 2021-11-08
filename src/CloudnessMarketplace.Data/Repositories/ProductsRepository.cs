@@ -119,7 +119,8 @@ namespace CloudnessMarketplace.Data.Repositories
         {
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
-            await _container.ReplaceItemAsync<Product>(product, product.Id);
+            var result = await _container.ReplaceItemAsync<Product>(product, product.Id);
+            return result.Resource; 
         }
     }
 

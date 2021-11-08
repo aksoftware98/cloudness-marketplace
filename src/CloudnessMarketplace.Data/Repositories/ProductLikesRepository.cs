@@ -28,7 +28,11 @@ namespace CloudnessMarketplace.Data.Repositories
             // Get the item by id 
             var product = await _productsRepo.GetByIdAsync(productId, false);
             if (product == null)
-                return; 
+                return;
+
+            var productLike = await GetProductLikeAsync(productId, userId);
+            if (productLike != null)
+                return;
 
             await _container.CreateItemAsync<ProductLike>(new ProductLike
             {
@@ -47,19 +51,29 @@ namespace CloudnessMarketplace.Data.Repositories
             // Get the product
             var product = await _productsRepo.GetByIdAsync(productId, false);
             if (product == null)
-                return; 
-
+                return;
             product.Likes--;
-            
+
+            var productLike = await GetProductLikeAsync(productId, userId);
+            if (productLike != null)
+            {
+                await _container.DeleteItemAsync<ProductLike>(productLike.Id, new PartitionKey(userId));
+                await _productsRepo.UpdateAsync(product);
+            }
+        }
+
+        private async Task<ProductLike> GetProductLikeAsync(string productId, string userId)
+        {
+
             var query = $"SELECT * FROM c WHERE c.productId = '{productId}' AND c.userId = '{userId}'";
             var iterator = _container.GetItemQueryIterator<ProductLike>(query);
             var result = await iterator.ReadNextAsync();
             if (result.Resource.Any())
             {
-                await _container.DeleteItemAsync<ProductLike>(result.Resource.First().Id, new PartitionKey(userId));
-                await _productsRepo.UpdateAsync(product);
+                return result.FirstOrDefault();
             }
 
+            return null;
         }
     }
 
