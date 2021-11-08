@@ -26,7 +26,7 @@ namespace CloudnessMarketplace.Data.Repositories
         public async Task LikeProductAsync(string productId, string userId)
         {
             // Get the item by id 
-            var product = await _productsRepo.GetByIdAsync(productId, false);
+            var product = await _productsRepo.GetByIdAsync(productId, null, false);
             if (product == null)
                 return;
 
@@ -51,7 +51,7 @@ namespace CloudnessMarketplace.Data.Repositories
         public async Task RemoveLikeAsync(string productId, string userId)
         {
             // Get the product
-            var product = await _productsRepo.GetByIdAsync(productId, false);
+            var product = await _productsRepo.GetByIdAsync(productId, null, false);
             if (product == null)
                 return;
 
