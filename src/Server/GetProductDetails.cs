@@ -17,10 +17,12 @@ namespace CloudnessMarketplace.Functions
     {
 
         private readonly IProductsRepository _productsRepo;
+        private readonly IProductLikesRepository _likesRepo;
 
-        public GetProductDetails(IProductsRepository productsRepo)
+        public GetProductDetails(IProductsRepository productsRepo, IProductLikesRepository likesRepo)
         {
             _productsRepo = productsRepo;
+            _likesRepo = likesRepo;
         }
 
         [FunctionName("GetProductDetails")]
@@ -46,6 +48,8 @@ namespace CloudnessMarketplace.Functions
             if (product == null)
                 return new NotFoundResult();
 
+            var productLike = await _likesRepo.GetProductLikeAsync(product.Id, userId);
+
             return  new OkObjectResult(new ApiResponse<ProductDto>("Product retrieved successfully", new ProductDto
             {
                 Id = product.Id,
@@ -61,6 +65,7 @@ namespace CloudnessMarketplace.Functions
                 SellingDate = product.SellingDate,
                 UserId = product.UserId,
                 Views = product.Views,
+                IsLikedByCurrentUser = productLike != null
             }));
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using CloudnessMarketplace.Models;
+using System.Threading.Tasks;
 
 namespace CloudnessMarketplace.Data.Interfaces
 {
@@ -7,5 +8,7 @@ namespace CloudnessMarketplace.Data.Interfaces
         Task LikeProductAsync(string productId, string userId);
 
         Task RemoveLikeAsync(string productId, string userId);
+
+        Task<ProductLike> GetProductLikeAsync(string productId, string userId);
     }
 }

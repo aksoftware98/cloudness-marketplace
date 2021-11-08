@@ -30,5 +30,7 @@ namespace CloudnessMarketplace.Shared.Models
         public int Likes { get; set; }
 
         public int Views { get; set; }
+
+        public bool IsLikedByCurrentUser { get; set; }
     }
 }

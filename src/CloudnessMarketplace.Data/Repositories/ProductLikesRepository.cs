@@ -66,7 +66,7 @@ namespace CloudnessMarketplace.Data.Repositories
             }
         }
 
-        private async Task<ProductLike> GetProductLikeAsync(string productId, string userId)
+        public async Task<ProductLike> GetProductLikeAsync(string productId, string userId)
         {
 
             var query = $"SELECT * FROM c WHERE c.productId = '{productId}' AND c.userId = '{userId}'";

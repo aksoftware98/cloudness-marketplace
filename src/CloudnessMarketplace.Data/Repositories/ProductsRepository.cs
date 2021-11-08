@@ -47,7 +47,7 @@ namespace CloudnessMarketplace.Data.Repositories
             return null;
         }
 
-       
+
 
         public async Task DeleteAsync(Product product)
         {
@@ -118,19 +118,19 @@ namespace CloudnessMarketplace.Data.Repositories
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
             var result = await _container.ReplaceItemAsync<Product>(product, product.Id);
-            return result.Resource; 
+            return result.Resource;
         }
 
         #region Helper Methods
         private async Task HandleProductViewAsync(bool increaseView, Product product, string userId)
         {
-            if (product == null)
-                throw new ArgumentNullException(nameof(product));
-            if (userId == null)
-                throw new ArgumentNullException(nameof(userId));
 
             if (increaseView)
             {
+                if (product == null)
+                    throw new ArgumentNullException(nameof(product));
+                if (userId == null)
+                    throw new ArgumentNullException(nameof(userId));
                 // Increase the total number of the views
                 product.Views++;
                 await _container.ReplaceItemAsync<Product>(product, product.Id);
