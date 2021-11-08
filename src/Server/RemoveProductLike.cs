@@ -24,6 +24,7 @@ namespace CloudnessMarketplace.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)] HttpRequest req,
             ILogger log)
         {
+
             log.LogInformation("Delete like product");
 
             string userId = "Test";

@@ -33,7 +33,7 @@ namespace CloudnessMarketplace.Functions
             log.LogInformation("Get product details by Id");
 
             // Get the user id from the access token
-            string userId = "test";
+            string userId = "Test";
             string productId = req.Query["productId"];
             if (productId == null)
                 return new NotFoundResult();

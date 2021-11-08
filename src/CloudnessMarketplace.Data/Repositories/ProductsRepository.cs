@@ -57,12 +57,12 @@ namespace CloudnessMarketplace.Data.Repositories
             await _container.DeleteItemAsync<Product>(product.Id, new PartitionKey(product.Category));
         }
 
-        public async Task<PagedList<Product>> GetTrendProductsAsync(int pageIndex = 1, int pageSize = 10)
+        public async Task<PagedList<Models.ProductSummary>> GetTrendProductsAsync(int pageIndex = 1, int pageSize = 10)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<PagedList<Product>> GetProductsByCategoryAsync(string categoryName, int pageIndex = 1, int pageSize = 10)
+        public async Task<PagedList<Models.ProductSummary>> GetProductsByCategoryAsync(string categoryName, int pageIndex = 1, int pageSize = 10)
         {
             if (pageSize > 100)
                 pageSize = 100;
@@ -83,8 +83,8 @@ namespace CloudnessMarketplace.Data.Repositories
             // Get all the items within the category 
             int skip = (pageIndex - 1) * pageSize;
             int limit = pageSize;
-            var query = $"SELECT * FROM c WHERE c.category = '{categoryName}' OFFSET {skip} LIMIT {limit}";
-            var iterator = _container.GetItemQueryIterator<Product>(query);
+            var query = $"SELECT c.id, c.name, c.pictureUrls[0] as cover, c.userId, c.likes, c.views, c.price, c.isSold, c.creationDate, c.category FROM c WHERE c.category = '{categoryName}' OFFSET {skip} LIMIT {limit}";
+            var iterator = _container.GetItemQueryIterator<Models.ProductSummary>(query);
             var result = await iterator.ReadNextAsync();
 
             int totalPages = totalCount / pageSize;
@@ -92,15 +92,15 @@ namespace CloudnessMarketplace.Data.Repositories
             if (totalCount % pageSize != 0)
                 totalPages++;
 
-            return new PagedList<Product>(result.Resource, pageIndex, totalPages, pageSize, totalCount);
+            return new PagedList<Models.ProductSummary>(result.Resource, pageIndex, totalPages, pageSize, totalCount);
         }
 
-        public Task<PagedList<Product>> GetTodayProductsAsync(int pageIndex = 1, int pageSize = 10)
+        public Task<PagedList<Models.ProductSummary>> GetTodayProductsAsync(int pageIndex = 1, int pageSize = 10)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PagedList<Product>> GetUserProductsAsync(string userId, int pageIndex = 1, int pageSize = 10)
+        public Task<PagedList<Models.ProductSummary>> GetUserProductsAsync(string userId, int pageIndex = 1, int pageSize = 10)
         {
             throw new NotImplementedException();
         }

@@ -36,18 +36,17 @@ namespace CloudnessMarketplace.Functions
             int pageIndex = Convert.ToInt32(pageNumberAsString ?? 1.ToString()); 
             var result = await _productsRepository.GetProductsByCategoryAsync(name, pageIndex);
 
-            return new OkObjectResult(new ApiResponse<PagedList<ProductDto>>("Products received successfully", new PagedList<ProductDto>(result.Items.Select(p => new ProductDto
+            return new OkObjectResult(new ApiResponse<PagedList<ProductSummary>>("Products received successfully", new PagedList<ProductSummary>(result.Items.Select(p => new ProductSummary
             {
                 Category = p.Category,
                 CreationDate = p.CreationDate,
-                Description = p.Description,
                 Id = p.Id,
                 IsSold = p.IsSold,
-                Metadata = p.Metadata,
                 Name = p.Name,
-                PictureUrls = p.PictureUrls,
                 Price = p.Price,
-                SellingDate = p.SellingDate,
+                Cover = p.Cover,
+                Likes = p.Likes,
+                Views = p.Views,
                 UserId = p.UserId,
             }), result.PageIndex, result.PagesCount, result.PageSize, result.TotalItemsCount)));
         }
