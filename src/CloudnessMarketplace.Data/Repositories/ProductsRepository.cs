@@ -47,19 +47,46 @@ namespace CloudnessMarketplace.Data.Repositories
             return null;
         }
 
-
-
         public async Task DeleteAsync(Product product)
         {
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
 
-            await _container.DeleteItemAsync<Product>(product.Id, new PartitionKey(product.Category));
+            product.IsDeleted = true;
+            await UpdateAsync(product);
         }
 
         public async Task<PagedList<Models.ProductSummary>> GetTrendProductsAsync(int pageIndex = 1, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            if (pageSize > 100)
+                pageSize = 100;
+
+            if (pageSize < 5)
+                pageSize = 5;
+
+            if (pageIndex < 1)
+                pageIndex = 1;
+
+            // Get the total count of the items 
+            var countQuery = $"SELECT VALUE COUNT('id') FROM c WHERE c.category = ''";
+
+            var countsIterator = _container.GetItemQueryIterator<int>(countQuery);
+            var countsResult = await countsIterator.ReadNextAsync();
+            int totalCount = countsResult.Resource.FirstOrDefault();
+
+            // Get all the items within the category 
+            int skip = (pageIndex - 1) * pageSize;
+            int limit = pageSize;
+            var query = $"SELECT c.id, c.name, c.pictureUrls[0] as cover, c.userId, c.likes, c.views, c.price, c.isSold, c.creationDate, c.category FROM c WHERE c.category = '' OFFSET {skip} LIMIT {limit}";
+            var iterator = _container.GetItemQueryIterator<Models.ProductSummary>(query);
+            var result = await iterator.ReadNextAsync();
+
+            int totalPages = totalCount / pageSize;
+
+            if (totalCount % pageSize != 0)
+                totalPages++;
+
+            return new PagedList<Models.ProductSummary>(result.Resource, pageIndex, totalPages, pageSize, totalCount);
         }
 
         public async Task<PagedList<Models.ProductSummary>> GetProductsByCategoryAsync(string categoryName, int pageIndex = 1, int pageSize = 10)
@@ -74,7 +101,7 @@ namespace CloudnessMarketplace.Data.Repositories
                 pageIndex = 1;
 
             // Get the total count of the items 
-            var countQuery = $"SELECT VALUE COUNT('id') FROM c WHERE c.category = '{categoryName}'";
+            var countQuery = $"SELECT VALUE COUNT('id') FROM c WHERE c.category = '{categoryName}' and c.isDeleted = false";
 
             var countsIterator = _container.GetItemQueryIterator<int>(countQuery);
             var countsResult = await countsIterator.ReadNextAsync();

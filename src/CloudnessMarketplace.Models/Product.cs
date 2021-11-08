@@ -45,6 +45,9 @@ namespace CloudnessMarketplace.Models
 
         [JsonProperty("views")]
         public int Views { get; set; }
+
+        [JsonProperty("isDeleted")]
+        public bool IsDeleted { get; set; }
     }
 
 }
