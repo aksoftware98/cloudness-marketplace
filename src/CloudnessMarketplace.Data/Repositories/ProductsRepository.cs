@@ -115,9 +115,11 @@ namespace CloudnessMarketplace.Data.Repositories
             await _container.ReplaceItemAsync<Product>(product, product.Id);
         }
 
-        public Task<Product> UpdateAsync(Product product)
+        public async Task<Product> UpdateAsync(Product product)
         {
-            throw new NotImplementedException();
+            if (product == null)
+                throw new ArgumentNullException(nameof(product));
+            await _container.ReplaceItemAsync<Product>(product, product.Id);
         }
     }
 
