@@ -30,7 +30,7 @@ namespace CloudnessMarketplace.Data.Repositories
             return result;
         }
 
-        public async Task<Product> GetByIdAsync(string id, bool increaseView = false)
+        public async Task<Product> GetByIdAsync(string id, string userId = null, bool increaseView = false)
         {
             var query = $"SELECT * FROM p WHERE p.id = '{id}'";
 
@@ -38,18 +38,16 @@ namespace CloudnessMarketplace.Data.Repositories
             var result = await iterator.ReadNextAsync();
             if (result.Resource.Any())
             {
-                var product = result.FirstOrDefault(); 
-                if (increaseView)
-                {
-                    product.Views++;
-                    await _container.ReplaceItemAsync<Product>(product, product.Id);
-                }
+                var product = result.FirstOrDefault();
+                await HandleProductViewAsync(increaseView, product, userId);
 
                 return product;
             }
 
             return null;
         }
+
+       
 
         public async Task DeleteAsync(Product product)
         {
@@ -122,6 +120,43 @@ namespace CloudnessMarketplace.Data.Repositories
             var result = await _container.ReplaceItemAsync<Product>(product, product.Id);
             return result.Resource; 
         }
+
+        #region Helper Methods
+        private async Task HandleProductViewAsync(bool increaseView, Product product, string userId)
+        {
+            if (product == null)
+                throw new ArgumentNullException(nameof(product));
+            if (userId == null)
+                throw new ArgumentNullException(nameof(userId));
+
+            if (increaseView)
+            {
+                // Increase the total number of the views
+                product.Views++;
+                await _container.ReplaceItemAsync<Product>(product, product.Id);
+
+                // Add the view object to track the time and who viewed the prdocut 
+                await AddProductViewAsync(product, userId);
+            }
+        }
+
+        /// <summary>
+        /// Add <see cref="ProductView"/> object to the database so we can track who viewed the product and when
+        /// </summary>
+        /// <param name="product">Product that has been viewed</param>
+        /// <returns></returns>
+        private async Task AddProductViewAsync(Product product, string userId)
+        {
+            var viewsContainer = _db.GetContainer("ProductViews");
+            await viewsContainer.CreateItemAsync<ProductView>(new ProductView
+            {
+                Id = Guid.NewGuid().ToString(),
+                ProductId = product.Id,
+                UserId = userId,
+                ViewDate = DateTime.UtcNow,
+            });
+        }
+        #endregion 
     }
 
 

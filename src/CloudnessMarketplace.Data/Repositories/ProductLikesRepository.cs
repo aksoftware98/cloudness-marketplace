@@ -34,6 +34,7 @@ namespace CloudnessMarketplace.Data.Repositories
             if (productLike != null)
                 return;
 
+            // Add the item to the container
             await _container.CreateItemAsync<ProductLike>(new ProductLike
             {
                 Id = Guid.NewGuid().ToString(),
@@ -42,6 +43,7 @@ namespace CloudnessMarketplace.Data.Repositories
                 UserId = userId,
             });
 
+            // Update the likes of the product
             product.Likes++;
             await _productsRepo.UpdateAsync(product);
         }
@@ -52,7 +54,9 @@ namespace CloudnessMarketplace.Data.Repositories
             var product = await _productsRepo.GetByIdAsync(productId, false);
             if (product == null)
                 return;
-            product.Likes--;
+
+            if (product.Likes > 0)
+                product.Likes--;
 
             var productLike = await GetProductLikeAsync(productId, userId);
             if (productLike != null)

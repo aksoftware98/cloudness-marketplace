@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Text.Json.Serialization;
 
 namespace CloudnessMarketplace.Models
@@ -13,6 +14,9 @@ namespace CloudnessMarketplace.Models
 
         [JsonProperty("userId")]
         public string UserId { get; set; }
+
+        [JsonProperty("viewDate")]
+        public DateTime ViewDate { get; set; }
     }
 
 
