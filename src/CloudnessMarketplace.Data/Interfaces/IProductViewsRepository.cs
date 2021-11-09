@@ -4,6 +4,6 @@ namespace CloudnessMarketplace.Data.Interfaces
 {
     public interface IProductViewsRepository
     {
-        Task IncreaseProductViewAsync(string productId, string userId);
+        //Task IncreaseProductViewAsync(string productId, string userId);
     }
 }
