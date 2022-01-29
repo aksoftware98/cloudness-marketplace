@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using CloudnessMarketplace.Data.Interfaces;
 using CloudnessMarketplace.Shared.Responses;
+using CloudnessMarketplace.Functions.Extensions;
 
 namespace CloudnessMarketplace.Functions
 {
@@ -29,7 +30,7 @@ namespace CloudnessMarketplace.Functions
         {
             log.LogInformation("Like product");
 
-            string userId = "Test"; 
+            string userId = req.GetUserId();
             string productId = req.Query["productId"];
 
             if (productId == null)

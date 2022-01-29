@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using CloudnessMarketplace.Data.Interfaces;
 using CloudnessMarketplace.Shared.Responses;
 using CloudnessMarketplace.Shared.Models;
+using CloudnessMarketplace.Functions.Extensions;
 
 namespace CloudnessMarketplace.Functions
 {
@@ -33,7 +34,7 @@ namespace CloudnessMarketplace.Functions
             log.LogInformation("Get product details by Id");
 
             // Get the user id from the access token
-            string userId = "Test";
+            string userId = req.GetUserId();
             string productId = req.Query["productId"];
             if (productId == null)
                 return new NotFoundResult();

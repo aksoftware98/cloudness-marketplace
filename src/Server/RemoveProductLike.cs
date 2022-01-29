@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CloudnessMarketplace.Data.Interfaces;
 using CloudnessMarketplace.Shared.Responses;
+using CloudnessMarketplace.Functions.Extensions;
 
 namespace CloudnessMarketplace.Functions
 {
@@ -27,7 +28,7 @@ namespace CloudnessMarketplace.Functions
 
             log.LogInformation("Delete like product");
 
-            string userId = "Test";
+            string userId = req.GetUserId();
             string productId = req.Query["productId"];
 
             if (productId == null)

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using CloudnessMarketplace.Data.Interfaces;
 using CloudnessMarketplace.Shared.Responses;
+using CloudnessMarketplace.Functions.Extensions;
 
 namespace CloudnessMarketplace.Functions
 {
@@ -30,7 +31,7 @@ namespace CloudnessMarketplace.Functions
             log.LogInformation("Sell product");
 
             // Get the user id 
-            string userId = "testUser"; 
+            string userId = req.GetUserId(); 
             // TODO: Validate the user id with the owern of the product 
 
             string id = req.Query["id"];

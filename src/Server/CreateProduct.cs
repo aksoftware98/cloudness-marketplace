@@ -12,6 +12,7 @@ using CloudnessMarketplace.Shared.Responses;
 using CloudnessMarketplace.Data.Interfaces;
 using FluentValidation;
 using System.Linq;
+using CloudnessMarketplace.Functions.Extensions;
 
 namespace CloudnessMarketplace.Functions
 {
@@ -35,7 +36,7 @@ namespace CloudnessMarketplace.Functions
             log.LogInformation("Create a new product");
 
             // TODO: Get the user id from the logged in user 
-            string userId = "Test";
+            string userId = req.GetUserId();
             ProductDto model = null;
 
             try
