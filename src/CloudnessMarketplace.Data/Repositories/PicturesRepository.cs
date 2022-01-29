@@ -39,6 +39,7 @@ namespace CloudnessMarketplace.Data.Repositories
 
             // Get the container 
             var container = _db.GetContainer(CONTAINER_NAME);
+            
             await container.CreateItemAsync(picture);
             return picture.Url;
         }

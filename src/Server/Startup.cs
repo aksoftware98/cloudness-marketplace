@@ -1,4 +1,5 @@
-﻿using CloudnessMarketplace.Data.Interfaces;
+﻿using CloudnessMarketplace.Data;
+using CloudnessMarketplace.Data.Interfaces;
 using CloudnessMarketplace.Data.Options;
 using CloudnessMarketplace.Data.Repositories;
 using CloudnessMarketplace.Shared.Validators;
@@ -29,10 +30,8 @@ namespace CloudnessMarketplace.Functions
                 DatabaseName = config["DatabaseName"],
                 ConnectionString = config["CosmosDbConnectionString"]
             });
-            builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
-            builder.Services.AddScoped<IPictureRepository, PicturesRepository>();
-            builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
-            builder.Services.AddScoped<IProductLikesRepository, ProductLikesRepository>();
+
+            builder.Services.AddDataRepositories();
         }
     }
 }
