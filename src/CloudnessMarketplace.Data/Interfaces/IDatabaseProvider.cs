@@ -12,6 +12,6 @@ namespace CloudnessMarketplace.Data.Interfaces
         /// Creates the requried containers
         /// </summary>
         /// <returns></returns>
-        Task InitializeDbAsycn();
+        Task InitializeDbAsync();
     }
 }

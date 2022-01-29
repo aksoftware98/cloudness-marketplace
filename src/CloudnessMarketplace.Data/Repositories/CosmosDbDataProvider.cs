@@ -26,7 +26,7 @@ namespace CloudnessMarketplace.Data.Repositories
         /// Create the required containers
         /// </summary>
         /// <returns></returns>
-        public async Task InitializeDbAsycn()
+        public async Task InitializeDbAsync()
         {
             await _db.CreateContainerIfNotExistsAsync("Pictures", "/type");
             await _db.CreateContainerIfNotExistsAsync("ProductLikes", "/userid");
