@@ -31,7 +31,9 @@ namespace CloudnessMarketplace.Functions
             log.LogInformation("Sell product");
 
             // Get the user id 
-            string userId = req.GetUserId(); 
+            string userId = req.GetUserId();
+            if (userId == null)
+                return new UnauthorizedResult();
             // TODO: Validate the user id with the owern of the product 
 
             string id = req.Query["id"];
@@ -44,7 +46,7 @@ namespace CloudnessMarketplace.Functions
                 return new NotFoundResult();
 
             var product = await _productsRepo.GetByIdAsync(id);
-            if (product == null)
+            if (product == null || product.UserId != userId)
                 return new NotFoundResult();
 
             await _productsRepo.SellAsync(product);

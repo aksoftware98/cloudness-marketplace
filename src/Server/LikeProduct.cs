@@ -31,6 +31,8 @@ namespace CloudnessMarketplace.Functions
             log.LogInformation("Like product");
 
             string userId = req.GetUserId();
+            if (userId == null)
+                return new UnauthorizedResult();
             string productId = req.Query["productId"];
 
             if (productId == null)

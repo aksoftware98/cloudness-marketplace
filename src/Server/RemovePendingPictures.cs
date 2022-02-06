@@ -19,7 +19,7 @@ namespace CloudnessMarketplace.Functions
 
         private readonly IPictureRepository _picturesRepo;
         private readonly IConfiguration _configuration;
-     
+
         public RemovePendingPictures(IPictureRepository picturesRepo, IConfiguration configuration)
         {
             _picturesRepo = picturesRepo;
@@ -27,9 +27,7 @@ namespace CloudnessMarketplace.Functions
         }
 
         [FunctionName("RemovePendingPictures")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-            ILogger log)
+        public async Task Run([TimerTrigger("0 0 * * * *")] TimerInfo timer, ILogger log)
         {
             log.LogInformation("Retrieving the list of pending images");
 
@@ -37,7 +35,7 @@ namespace CloudnessMarketplace.Functions
 
             var storageAccount = StorageAccount.NewFromConnectionString("AzureWebJobsStorage");
             var blobClient = storageAccount.CreateCloudBlobClient();
-            var container = blobClient.GetContainerReference("pictures"); 
+            var container = blobClient.GetContainerReference("pictures");
 
             if (result.Any())
             {
@@ -53,7 +51,6 @@ namespace CloudnessMarketplace.Functions
                 log.LogInformation($"{result.Count()} picture(s) have been removed successfully!");
             }
 
-            return new OkObjectResult(new ApiResponse($"{result.Count()} image has been removed successfully!", true));
         }
     }
 }

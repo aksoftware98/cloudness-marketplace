@@ -37,6 +37,8 @@ namespace CloudnessMarketplace.Functions
 
             // TODO: Get the user id from the logged in user 
             string userId = req.GetUserId();
+            if (userId == null)
+                return new UnauthorizedResult();
             ProductDto model = null;
 
             try

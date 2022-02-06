@@ -35,6 +35,7 @@ namespace CloudnessMarketplace.Functions
 
             // Get the user id from the access token
             string userId = req.GetUserId();
+            
             string productId = req.Query["productId"];
             if (productId == null)
                 return new NotFoundResult();
@@ -44,7 +45,7 @@ namespace CloudnessMarketplace.Functions
             if (!bool.TryParse(increaseViewString, out increaseView))
                 increaseView = false;
 
-            var product = await _productsRepo.GetByIdAsync(productId, userId, increaseView);
+            var product = await _productsRepo.GetByIdAsync(productId, userId, increaseView && userId != null);
 
             if (product == null)
                 return new NotFoundResult();
