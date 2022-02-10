@@ -11,6 +11,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddMsalAuthentication(options =>
 {
     builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);
+    options.ProviderOptions.DefaultAccessTokenScopes.Add(builder.Configuration["AzureAdB2C:DefaultScope"]);
 });
 
 await builder.Build().RunAsync();
