@@ -27,7 +27,10 @@ public class AuthorizationMessageHandler : DelegatingHandler
         if (tokenResult.Status == AccessTokenResultStatus.Success)
         {
             if (tokenResult.TryGetToken(out var accessToken))
-                request.Headers.Add("Authorization", $"Bearer {accessToken}");
+            {
+                request.Headers.Add("Authorization", $"Bearer {accessToken.Value}");
+                Console.WriteLine(accessToken.Value);
+            }
         }
 
         return await base.SendAsync(request, cancellationToken);

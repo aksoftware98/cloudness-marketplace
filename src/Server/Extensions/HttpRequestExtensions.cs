@@ -26,11 +26,11 @@ namespace CloudnessMarketplace.Functions.Extensions
 
             if (!string.IsNullOrWhiteSpace(authorizationHeader))
             {
-                string token = authorizationHeader.Replace("Bearer ", authorizationHeader);
+                string token = authorizationHeader.Replace("Bearer ", "");
                 var jwtHandler = new JwtSecurityTokenHandler();
                 var accessToken = jwtHandler.ReadJwtToken(token);
 
-                var userId = accessToken.Claims.SingleOrDefault(i => i.Type == ClaimTypes.NameIdentifier).Value;
+                var userId = accessToken.Claims.SingleOrDefault(i => i.Type == "oid").Value;
 
                 return userId;
             }
