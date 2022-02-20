@@ -30,6 +30,9 @@ namespace CloudnessMarketplace.Functions.Extensions
                 var jwtHandler = new JwtSecurityTokenHandler();
                 var accessToken = jwtHandler.ReadJwtToken(token);
 
+                if (!accessToken.Claims.Any())
+                    return null; 
+
                 var userId = accessToken.Claims.SingleOrDefault(i => i.Type == "oid").Value;
 
                 return userId;

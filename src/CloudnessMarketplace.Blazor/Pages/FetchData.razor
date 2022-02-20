@@ -1,4 +1,6 @@
 ﻿@page "/fetchdata"
+@using CloudnessMarketplace.Shared.Models
+@using CloudnessMarketplace.Shared.Responses
 @inject HttpClient Http
 
 <PageTitle>Weather forecast</PageTitle>
@@ -7,7 +9,7 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (categories == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -16,20 +18,18 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Icon</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var category in categories)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@category.Id</td>
+                    <td>@category.Name</td>
+                    <td>@category.IconUrl</td>
                 </tr>
             }
         </tbody>
@@ -37,21 +37,13 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+
+    private CategoryDto[]? categories;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        var result = await Http.GetFromJsonAsync<ApiResponse<CategoryDto[]>>("api/GetCategories");
+        categories = result?.Data;
     }
 
-    public class WeatherForecast
-    {
-        public DateTime Date { get; set; }
-
-        public int TemperatureC { get; set; }
-
-        public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-    }
 }
