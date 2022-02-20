@@ -1,19 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <NavMenu />
-    <header>
-        <img src="images/logo.jpg" class="logo" />
-        <h3>Welcome to Cloudness Marketplace</h3>
-    </header>
-    <main>
-        <div class="top-row px-4 auth">
-            <LoginDisplay />
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+	<NavMenu />
+	<header>
+		<img src="images/logo.jpg" class="logo" />
+	</header>
+	<main class="bg-blue" style="padding-top: 10px;">
+		<div class="container">
+			@Body
+		</div>
+	</main>
 </div>

@@ -76,7 +76,7 @@ main {
 }
 
 header {
-    height: 250px; 
+    height: 150px; 
     background-color: white; 
     display: flex; 
     align-items: center; 
