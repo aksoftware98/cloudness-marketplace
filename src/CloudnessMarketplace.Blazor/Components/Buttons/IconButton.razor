@@ -18,13 +18,15 @@
 	public EventCallback OnClick { get; set; }
 
 	[Parameter]
-	public bool WithShadow { get; set; }
+	public bool WithShadow { get; set; } = true;
 
 	private string _buttonClasses => new CssBuilder()
 										.AddClass("rounded-button")
 										.AddClass("shadow-01", WithShadow)
 										.AddClass("bg-yellow", BackgroundColor == BackgroundColor.Yellow)
 										.AddClass("bg-blue", BackgroundColor == BackgroundColor.Blue)
+										.AddClass("text-light", BackgroundColor == BackgroundColor.Blue)
+										.AddClass("text-dark", BackgroundColor == BackgroundColor.Yellow)
 										.Build();
 
 }

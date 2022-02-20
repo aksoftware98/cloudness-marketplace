@@ -1,28 +1,11 @@
 
 .nav-menu {
     background-color: #0C9CE4;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     padding: 3px;
 }
 
-    .nav-menu .nav-button {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        background-color: #FFC500;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: black;
-        font-size: 20px;
-        text-decoration: none;
-        margin:2px;
-        margin-left: 3px;
-    }
-
-        .nav-menu .nav-button:hover {
-            text-decoration: none;
-            color: black;
-        }
+.nav-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

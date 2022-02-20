@@ -1,17 +1,39 @@
-﻿<nav class="nav-menu">
-        <a href="#" class="nav-button shadow-01"><i class="ms-Icon ms-Icon--Home" aria-hidden="true"></i></a>
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
-        <AuthorizeView>
-            <Authorized>
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
 
-            </Authorized>
-            <NotAuthorized>
-                <a href="#" class="nav-button shadow-01"></i></a>
-            </NotAuthorized>
-        </AuthorizeView>
-        
+<nav class="nav-menu">
+	<div class="container nav-flex">
+		<IconButton Icon="Home" />
+
+		<AuthorizeView>
+			<Authorized>
+				<div class="horizontal-items">
+					<h6 style="margin-right:3px;" class="text-light">Hi @context.User.Identity?.Name!</h6>
+					<IconButton Icon="Signout" OnClick="BeginLogout" />
+				</div>
+			</Authorized>
+			<NotAuthorized>
+				<IconButton Icon="Signin" OnClick="Signin" />
+			</NotAuthorized>
+		</AuthorizeView>
+
+	</div>
 </nav>
 
 @code {
+
+	private void Signin()
+	{
+		Navigation.NavigateTo("authentication/login");
+	}
+
+	private async Task BeginLogout()
+	{
+		await SignOutManager.SetSignOutState();
+		Navigation.NavigateTo("authentication/logout");
+	}
+
 
 }

@@ -80,3 +80,22 @@ a, .btn-link {
 .bg-yellow {
     background-color: #FFC500
 }
+
+.horizontal-items {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center;
+}
+
+h6,h1,h2,h3,h4,h5 {
+    margin-bottom: 0px;
+}
+
+.text-light {
+    color: white;
+}
+
+.text-dark {
+    color: black;
+}
