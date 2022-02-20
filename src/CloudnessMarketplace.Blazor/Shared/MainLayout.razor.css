@@ -1,8 +1,3 @@
-.page {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
 
 main {
     flex: 1;
@@ -79,3 +74,17 @@ main {
         padding-right: 1.5rem !important;
     }
 }
+
+header {
+    height: 250px; 
+    background-color: white; 
+    display: flex; 
+    align-items: center; 
+    flex-direction: column; 
+    justify-content: center;
+}
+
+header .logo {
+    width: 120px;
+}
+

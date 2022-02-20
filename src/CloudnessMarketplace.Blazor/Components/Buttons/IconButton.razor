@@ -1,0 +1,30 @@
+﻿@namespace CloudnessMarketplace.Blazor.Components
+@using CloudnessMarketplace.Blazor.Models
+
+<button class="@_buttonClasses" @onclick="OnClick">
+	<i class="ms-Icon ms-Icon--@Icon" aria-hidden="true" />
+</button>
+
+@code 
+{
+
+	[Parameter]
+	public string? Icon { get; set; }
+
+	[Parameter]
+	public BackgroundColor BackgroundColor { get; set; } = BackgroundColor.Yellow;
+
+	[Parameter]
+	public EventCallback OnClick { get; set; }
+
+	[Parameter]
+	public bool WithShadow { get; set; }
+
+	private string _buttonClasses => new CssBuilder()
+										.AddClass("rounded-button")
+										.AddClass("shadow-01", WithShadow)
+										.AddClass("bg-yellow", BackgroundColor == BackgroundColor.Yellow)
+										.AddClass("bg-blue", BackgroundColor == BackgroundColor.Blue)
+										.Build();
+
+}

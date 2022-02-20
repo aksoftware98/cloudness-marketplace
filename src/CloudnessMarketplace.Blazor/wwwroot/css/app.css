@@ -62,3 +62,21 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+    .container {
+        padding: 0px 5px;
+    }
+
+
+.shadow-01 {
+    -webkit-box-shadow: 0px 5px 10px -4px #4F4F4F;
+    box-shadow: 0px 5px 10px -4px #4F4F4F;
+}
+
+.bg-blue {
+    background-color: #0C9CE4
+}
+
+.bg-yellow {
+    background-color: #FFC500
+}
